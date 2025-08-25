@@ -5,6 +5,7 @@ const app = express();
 const passport = require("passport");
 const session = require("express-session");
 const blogRouter = require("./routes/blogRouter");
+const accountRouter = require("./routes/accountRouter");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -15,6 +16,7 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", blogRouter);
+app.use("/account", accountRouter);
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send(err);

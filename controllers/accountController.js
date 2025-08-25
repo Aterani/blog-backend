@@ -17,7 +17,8 @@ async function createAccount(req, res) {
 
 async function getAccount(req, res) {
   try {
-    const account = req.user;
+    const accountId = Number(req.params.accountId);
+    const account = await db.getAccountById(accountId);
     if (!account) {
       return res.status(404).json({ error: "Account not found" });
     }
@@ -29,7 +30,7 @@ async function getAccount(req, res) {
 
 async function updateAccount(req, res) {
   try {
-    const accountId = Number(req.user.id);
+    const accountId = Number(req.params.accountId);
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const updatedAccount = await db.updateAccount(accountId, {
@@ -47,7 +48,7 @@ async function updateAccount(req, res) {
 
 async function deleteAccount(req, res) {
   try {
-    const accountId = Number(req.user.id);
+    const accountId = Number(req.params.accountId);
     const deletedAccount = await db.deleteAccount(accountId);
     if (!deletedAccount) {
       return res.status(404).json({ error: "Account not found" });
